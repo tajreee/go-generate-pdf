@@ -11,7 +11,7 @@ import (
 func main() {
 	config.GetConfig()
 
-	config.ConnectDB()
+	// config.ConnectDB()
 
 	app := fiber.New(fiber.Config{
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
