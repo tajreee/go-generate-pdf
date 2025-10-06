@@ -7,7 +7,7 @@ RUN go mod tidy
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /usr/app/go-app .
 
-FROM scratch
+FROM alpine:latest
 COPY --from=builder /usr/app/go-app /usr/app/go-app
 
 EXPOSE 8080
