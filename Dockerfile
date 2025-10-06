@@ -22,7 +22,7 @@ COPY --from=builder /usr/app/go-app .
 COPY --from=builder /usr/app/.env .
 
 
-EXPOSE 8080
+EXPOSE 3000
 
 # 4. Karena WORKDIR sudah diatur, kita bisa memanggil binary secara relatif
 ENTRYPOINT ["./go-app"]
