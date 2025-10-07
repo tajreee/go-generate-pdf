@@ -12,17 +12,28 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /usr/app/go-app .
 # --- STAGE 2: FINAL (YANG SUDAH DIPERBAIKI) ---
 FROM alpine:latest
 
-# 1. Tetapkan direktori kerja di image final (praktik terbaik)
+RUN apk update && apk add --no-cache \
+    chromium \
+    ttf-freefont \
+    udev \
+    xvfb
+
+# Tetapkan direktori kerja di image final (praktik terbaik)
 WORKDIR /usr/app
 
-# 2. Salin binary dari builder stage ke direktori kerja saat ini (.)
+# Salin binary dari builder stage ke direktori kerja saat ini (.)
 COPY --from=builder /usr/app/go-app .
 
-# 3. TAMBAHKAN INI: Salin .env dari builder stage ke direktori kerja saat ini (.)
+# TAMBAHKAN INI: Salin .env dari builder stage ke direktori kerja saat ini (.)
 COPY --from=builder /usr/app/.env .
 
 
 EXPOSE 3000
 
-# 4. Karena WORKDIR sudah diatur, kita bisa memanggil binary secara relatif
+# Praktik terbaik: Jalankan sebagai user non-root
+# '-D' berarti tidak membuat password
+RUN adduser -D appuser
+USER appuser
+
+# Karena WORKDIR sudah diatur, kita bisa memanggil binary secara relatif
 ENTRYPOINT ["./go-app"]
