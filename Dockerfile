@@ -33,6 +33,7 @@ EXPOSE 3000
 # Praktik terbaik: Jalankan sebagai user non-root
 # '-D' berarti tidak membuat password
 RUN adduser -D appuser
+RUN chown -R appuser:appuser /usr/app
 USER appuser
 
 # Karena WORKDIR sudah diatur, kita bisa memanggil binary secara relatif
